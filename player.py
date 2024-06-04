@@ -4,12 +4,14 @@ from constants import CARD_SUITS
 
 
 class Player:
+    take_cards = True
+    hand = []
+    turn_to_move = False
+    trump_suit = ""
+
     def __init__(self, name, player_type):
         self.name = name
-        self.hand = []
         self.type = player_type
-        self.turn_to_move = False
-        self.trump_suit = ""
 
     def add_card(self, card):
         self.hand.append(card)
@@ -83,8 +85,11 @@ class User(Player):
     def defend(self, pile: PairsOnTable):
         super().defend(pile)
         defend_or_take = input("Would you like to defend(1) or take(2)? ")
+
         if defend_or_take == "2":
+            self.take_cards = True
             return
+
         defending_card = self.card_chooser()
         self.hand.remove(defending_card)
         pile.pairs[-1].add_defender_card(defending_card)
