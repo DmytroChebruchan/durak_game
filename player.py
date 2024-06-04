@@ -39,7 +39,7 @@ class Player:
         return self.hand
 
     def attack(self, pairs_on_table: PairsOnTable):
-        print(f'{self.name} attacks.')
+        print(f"{self.name} attacks.")
 
         attacking_card = self.card_chooser()
 
@@ -55,7 +55,7 @@ class Player:
         return self.hand[0]
 
     def defend(self, pile: PairsOnTable):
-        print(f'{self.name} defends.')
+        print(f"{self.name} defends.")
         self.get_hand()
 
     def if_adds_cards(self):

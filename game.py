@@ -56,7 +56,7 @@ class Game:
 
         print("Round started.")
         self.set_attacker_for_1st_round()
-        
+
         self.attacker, self.defender = (
             (self.players[0], self.players[1])
             if self.players[0].turn_to_move
@@ -87,8 +87,7 @@ class Game:
             self.drop_cards_from_table()
             self.switch_turns_to_move()
         else:
-            cards_on_table = [pile.values() for pile in
-                              self.piles_on_table.pairs]
+            cards_on_table = [pile.values() for pile in self.piles_on_table.pairs]
             self.defender.hand.extend(cards_on_table)
             self.deal_balance_cards()
 
