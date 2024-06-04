@@ -1,3 +1,4 @@
+from additional_functions import print_decider
 from cards import Card, PairsOnTable
 from constants import CARD_SUITS
 
@@ -40,8 +41,6 @@ class Player:
     def attack(self, pairs_on_table: PairsOnTable):
         print(f'{self.name} attacks.')
 
-        self.get_hand()
-
         attacking_card = self.card_chooser()
 
         # remove card from hand
@@ -57,16 +56,7 @@ class Player:
 
     def defend(self, pile: PairsOnTable):
         print(f'{self.name} defends.')
-
         self.get_hand()
-        defend_or_take = input("Would you like to defend or take? ")
-        if defend_or_take == "take":
-            return
-        defending_card = self.card_chooser()
-
-        pile.pairs[-1].add_defender_card(defending_card)
-
-        self.sort_hand()
 
     def if_adds_cards(self):
         return False
@@ -78,42 +68,42 @@ class Player:
 class User(Player):
 
     def card_chooser(self) -> Card:
-        attacking_card_index = input("Pick a card to attack: ")
+        self.get_hand()
+        attacking_card_index = input("Pick a card: ")
         attacking_card = self.hand[int(attacking_card_index) - 1]
         return attacking_card
 
     def if_adds_cards(self):
-        input_add = input("Would you like to add cards? (y/n) ")
-        if input_add == "y":
+        print(f"{self.name} to make a move.")
+        input_add = input("Would you like to add cards (1)?")
+        if input_add == "1":
             return True
         return False
 
     def defend(self, pile: PairsOnTable):
-        print(f'{self.name} defends.')
-
-        self.get_hand()
-        defend_or_take = input("Would you like to defend or take? ")
-        if defend_or_take == "take":
+        super().defend(pile)
+        defend_or_take = input("Would you like to defend(1) or take(2)? ")
+        if defend_or_take == "2":
             return
         defending_card = self.card_chooser()
-
+        self.hand.remove(defending_card)
         pile.pairs[-1].add_defender_card(defending_card)
 
 
-class Computer(Player):
-    def card_chooser(self) -> Card:
-        return self.hand[0]
-
-    def if_adds_cards(self):
-        return False
-
-    def defend(self, pile: PairsOnTable):
-        print(f'{self.name} defends.')
-
-        self.get_hand()
-        defend_or_take = input("Would you like to defend or take? ")
-        if defend_or_take == "take":
-            return
-        defending_card = self.card_chooser()
-
-        pile.pairs[-1].add_defender_card(defending_card)
+# class Computer(Player):
+#     def card_chooser(self) -> Card:
+#         return self.hand[0]
+#
+#     def if_adds_cards(self):
+#         return False
+#
+#     def defend(self, pile: PairsOnTable):
+#         print(f'{self.name} defends.')
+#
+#         self.get_hand()
+#         defend_or_take = 1
+#         if defend_or_take == "1":
+#             return
+#         defending_card = self.card_chooser()
+#
+#         pile.pairs[-1].add_defender_card(defending_card)
