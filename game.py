@@ -53,21 +53,12 @@ class Game:
     def start_round(self):
 
         print_decider()
-
         print("Round started.")
-        self.set_attacker_for_1st_round()
+        self.set_roles()
 
-        self.attacker, self.defender = (
-            (self.players[0], self.players[1])
-            if self.players[0].turn_to_move
-            else (self.players[0], self.players[1])
-        )
-        print_decider()
-        print(f"Attacker: {self.attacker.name}")
-        print(f"Defender: {self.defender.name}")
-        print_decider()
-
+        # running terns of players
         while True:
+            print_decider()
             self.piles_on_table = PairsOnTable()
 
             self.attacker.attack(self.piles_on_table)
@@ -80,16 +71,33 @@ class Game:
                 print(f"{self.attacker.name} will not add cards.")
                 break
 
+            if self.defender.take_cards:
+                break
+
         self.complete_round()
+
+    def set_roles(self):
+        self.attacker, self.defender = (
+            (self.players[0], self.players[1])
+            if self.players[0].turn_to_move
+            else (self.players[0], self.players[1])
+        )
+        self.attacker.take_cards, self.attacker.take_cards = False
+
+        print_decider()
+        print(f"Attacker: {self.attacker.name}")
+        print(f"Defender: {self.defender.name}")
 
     def complete_round(self, drop_needed=True):
         if drop_needed:
             self.drop_cards_from_table()
             self.switch_turns_to_move()
         else:
-            cards_on_table = [pile.values() for pile in self.piles_on_table.pairs]
+            cards_on_table =\
+                [pile.values() for pile in self.piles_on_table.pairs]
             self.defender.hand.extend(cards_on_table)
-            self.deal_balance_cards()
+
+        self.deal_balance_cards()
 
         self.check_if_game_finished()
 
