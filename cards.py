@@ -45,7 +45,7 @@ class Deck:
         for player in players:
             for _ in range(6):
                 player.add_card(self.cards.pop())
-            player.sort_hand(self.trump_suit)
+            player.sort_hand()
 
     def deal_card_to_player(self, player):
         player.add_card(self.cards.pop())
