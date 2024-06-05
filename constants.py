@@ -17,7 +17,7 @@ CARD_VALUES = [
 ]
 
 CARD_SCORES = {
-    "Ace": 11,
+    "Ace": 14,
     "2": 2,
     "3": 3,
     "4": 4,
@@ -27,7 +27,7 @@ CARD_SCORES = {
     "8": 8,
     "9": 9,
     "10": 10,
-    "Jack": 10,
-    "Queen": 10,
-    "King": 10,
+    "Jack": 11,
+    "Queen": 12,
+    "King": 13,
 }
