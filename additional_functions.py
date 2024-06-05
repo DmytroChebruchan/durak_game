@@ -1,2 +1,2 @@
-def print_decider():
+def print_divider():
     print("-" * 30)
