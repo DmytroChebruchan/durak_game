@@ -103,10 +103,10 @@ class BasePlayer:
         print("You took the cards.")
         self.take_cards = True
 
-
-class User(BasePlayer):
+    # TODO: refactor name and usage based on context, make easier to understand
     def card_chooser(self, attacking_card=None) -> Card:
         self.hand.print_hand_cards()
+
         if attacking_card:
             attacking_card_index = attacking_card
         else:
@@ -132,3 +132,19 @@ class User(BasePlayer):
         if len(hand_of_trump_suit):
             return min(hand_of_trump_suit, key=lambda c: c.value).score
         return 0
+
+
+class User(BasePlayer):
+    pass
+
+
+class Computer(BasePlayer):
+    def request_player_for_input(self, text):
+        pass
+
+    def react_to_attack(self, pile: PairsOnTable):
+        pass
+
+    def if_adds_attacking_cards(self):
+        return False
+
