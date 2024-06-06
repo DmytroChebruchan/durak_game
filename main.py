@@ -1,12 +1,10 @@
 from game import Game
+from additional_functions import initial_greetings
 
 
 def main():
     game = Game()
-
-    game.set_attacker_for_1st_round()
-    game.start_round()
-
+    initial_greetings()
     while game.status == "in progress":
         game.start_round()
 

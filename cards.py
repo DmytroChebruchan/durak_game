@@ -1,4 +1,4 @@
-from constants import CARD_SUITS, CARD_VALUES, CARD_SCORES
+from constants import CARD_SUITS, CARD_SCORES
 import random
 
 
@@ -27,10 +27,15 @@ class Deck:
         self.drop_out = []
         self.trump_suit = ""
         self.cards = []
-        for suit in CARD_SUITS:
-            for value in CARD_VALUES:
-                self.cards.append(Card(suit, value, CARD_SCORES[value]))
+
+        self.create_deck()
+
         random.shuffle(self.cards)
+
+    def create_deck(self):
+        for suit in CARD_SUITS:
+            for value in CARD_SCORES.keys():
+                self.cards.append(Card(suit, value, CARD_SCORES[value]))
 
     def set_trump_suit(self):
         trump_card = self.cards[0]
@@ -48,11 +53,10 @@ class Deck:
 
     def initial_deal(self, players):
         for player in players:
-            player.hand = []
             for _ in range(6):
                 card = self.cards.pop()
-                player.add_card(card)
-            player.sort_hand()
+                player.hand.add_card_to_hand(card)
+            player.hand.sort_hand()
 
     def deal_card_to_player(self, player):
         player.add_card(self.cards.pop())
@@ -96,6 +100,12 @@ class PairsOnTable:
         piles = [pile for pile in self.pairs]
         pairs = [[pile.attacker_card, pile.defender_card] for pile in piles]
         return [card for pair in pairs for card in pair if card is not None]
+
+    def drop_cards_from_table(self, deck):
+        cards_on_table = self.get_cards_on_table()
+        if cards_on_table:
+            for card in cards_on_table:
+                deck.drop_card(card)
 
     def __str__(self):
         return str(self.pairs)
