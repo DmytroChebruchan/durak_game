@@ -7,13 +7,13 @@ from hand import Hand
 
 
 class BasePlayer:
-    def __init__(self, name, player_type):
+    def __init__(self, name, player_type, trump_suit=""):
         self.name = name
         self.type = player_type
-        self.hand = Hand()
+        self.hand = Hand(trump_suit=trump_suit)
         self.take_cards = False
         self.turn_to_move = False
-        self.trump_suit = ""
+        self.trump_suit = trump_suit
         self.highest_card = None
 
     def __str__(self):
@@ -21,7 +21,7 @@ class BasePlayer:
 
     def attack(self, pairs_on_table: PairsOnTable):
         print(f"{self.name} attacks.")
-        attacking_card = self.hand.card_chooser()
+        attacking_card = self.card_chooser()
         self.execute_attack(attacking_card, pairs_on_table)
 
     def execute_attack(self, attacking_card, pairs_on_table):
@@ -33,6 +33,8 @@ class BasePlayer:
         print_divider()
 
     def react_to_attack(self, pile: PairsOnTable):
+        if self.take_cards:
+            return
         print(f"{self.name} reacts to attack.")
         self.hand.print_hand_cards()
         if not self.check_if_can_defend(pile):
@@ -82,6 +84,7 @@ class BasePlayer:
         attacking_suit = attacking_card.suit
 
         if attacking_suit == self.trump_suit:
+            self.highest_card = self.hand.cards[0]
             return self.highest_card.score > attacking_card.score
 
         hand_of_trump_suit = self.hand.get_hand_of_trump_suit()
@@ -106,10 +109,9 @@ class BasePlayer:
         return reply
 
     def set_take_cards(self):
-        print("You took the cards.")
+        print("You took the card(s).")
         self.take_cards = True
 
-    # TODO: refactor name and usage based on context, make easier to understand
     def card_chooser(self, attacking_card_index=None) -> Card:
         self.hand.print_hand_cards()
 

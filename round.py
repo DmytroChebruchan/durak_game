@@ -40,6 +40,7 @@ class Round:
         while True:
             print_divider()
             print(f"There are {len(self.piles_on_table.pairs)} pairs on table.")
+            print_divider()
 
             self.attacker.attack(self.piles_on_table)
 
@@ -86,21 +87,20 @@ class Round:
             print(f"{self.defender.name} defended all cards.")
         else:
             cards_on_table = self.piles_on_table.get_cards_on_table()
-            self.defender.hand.extend(cards_on_table)
+            self.defender.hand.extend_hand(cards_on_table)
             print(f"{self.defender.name} takes cards to hand.")
 
         self.deal_balance_cards()
 
         self.check_if_game_finished()
+        self.defender.take_cards = False
         print("Round is ended.")
-        print_divider()
-        print_divider()
         print_divider()
         print_divider()
 
     def deal_balance_cards(self):
         for player in self.players:
-            while len(player.hand) < 6 and len(self.deck.cards) > 0:
+            while len(player.hand.cards) < 6 and len(self.deck.cards) > 0:
                 self.deck.deal_card_to_player(player)
 
     def check_if_game_finished(self):

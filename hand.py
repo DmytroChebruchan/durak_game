@@ -3,9 +3,9 @@ from constants import CARD_SUITS
 
 class Hand:
 
-    def __init__(self):
+    def __init__(self, trump_suit=""):
         self.cards = []
-        self.trump_suit = ""
+        self.trump_suit = trump_suit
         self.highest_card = None
 
     def card_chooser(self):
@@ -13,6 +13,9 @@ class Hand:
 
     def add_card_to_hand(self, card):
         self.cards.append(card)
+
+    def extend_hand(self, cards_on_table):
+        self.cards.extend(cards_on_table)
 
     def drop_card_from_hand(self, card):
         self.cards.remove(card)
@@ -42,7 +45,7 @@ class Hand:
         return suits
 
     def print_hand_cards(self):
-        print(self)
+        print(self.__str__())
 
     def get_hand_of_trump_suit(self):
         return [
@@ -58,4 +61,4 @@ class Hand:
         hand_str = ""
         for i, card in enumerate(self.cards):
             hand_str += f"{i + 1}. {card}\n"
-        return self.cards
+        return hand_str

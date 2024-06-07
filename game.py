@@ -14,8 +14,8 @@ class Game:
         self.deck = Deck()
         self.deck.set_trump_suit()
 
-        self.p1 = User("Player 1", "human")
-        self.p2 = User("Player 2", "human")
+        self.p1 = User("Player 1", "human", trump_suit=self.deck.trump_suit)
+        self.p2 = User("Player 2", "human", trump_suit=self.deck.trump_suit)
         # self.p2 = Computer("Computer", "computer")
 
         self.players = [self.p1, self.p2]
@@ -31,7 +31,7 @@ class Game:
         self,
     ):
         for player in self.players:
-            suits_of_player = set(card.suit for card in player.hand)
+            suits_of_player = set(card.suit for card in player.hand.cards)
             if self.deck.trump_suit in suits_of_player:
                 print(
                     f"{player.name} has the lowest card of "

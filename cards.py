@@ -59,7 +59,7 @@ class Deck:
             player.hand.sort_hand()
 
     def deal_card_to_player(self, player):
-        player.add_card(self.cards.pop())
+        player.hand.add_card_to_hand(self.cards.pop())
 
     def print_trump_suit(self):
         print(f"Trump suit is {self.trump_suit}.")
