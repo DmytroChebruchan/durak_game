@@ -56,9 +56,9 @@ class BasePlayer:
 
             if check_card_as_defender(pile, defending_card, self.trump_suit):
                 break
-            else:
-                print(f"{self.name} cannot defend with {defending_card}.")
-                print(f"Attacking card is {pile.pairs[-1].attacker_card}.")
+
+            print(f"{self.name} cannot defend with {defending_card}.")
+            print(f"Attacking card is {pile.pairs[-1].attacker_card}.")
 
         self.hand.drop_card_from_hand(defending_card)
         pile.pairs[-1].add_defender_card(defending_card)
@@ -74,20 +74,16 @@ class BasePlayer:
         if attacking_suit == self.trump_suit:
             return self.highest_card.score > attacking_card.score
 
-        hand_of_trump_suit = [
-            card for card in self.hand.cards if card.suit == self.trump_suit
-        ]
+        hand_of_trump_suit = self.hand.get_hand_of_trump_suit()
         if len(hand_of_trump_suit):
             return True
 
-        hand_of_attacking_suit = [
-            card for card in self.hand.cards if card.suit == attacking_suit
-        ]
+        hand_of_attacking_suit = self.hand.get_hand_of_suit(attacking_suit)
         if len(hand_of_attacking_suit):
             highest_card = max(hand_of_attacking_suit, key=lambda c: c.value)
             return highest_card.value > attacking_card.value
 
-        return self.highest_card.value > attacking_card.value
+        return False
 
     def check_if_can_add_attacking_card(self, pile: PairsOnTable):
         values_in_hand = set([card.value for card in self.hand.cards])
@@ -104,12 +100,10 @@ class BasePlayer:
         self.take_cards = True
 
     # TODO: refactor name and usage based on context, make easier to understand
-    def card_chooser(self, attacking_card=None) -> Card:
+    def card_chooser(self, attacking_card_index=None) -> Card:
         self.hand.print_hand_cards()
 
-        if attacking_card:
-            attacking_card_index = attacking_card
-        else:
+        if not attacking_card_index:
             attacking_card_index = int(
                 self.request_player_for_input(f"{self.name} pick a card: ")
             )

@@ -44,6 +44,16 @@ class Hand:
     def print_hand_cards(self):
         print(self)
 
+    def get_hand_of_trump_suit(self):
+        return [
+            card for card in self.cards if card.suit == self.trump_suit
+        ]
+
+    def get_hand_of_suit(self, suit):
+        return [
+            card for card in self.cards if card.suit == suit
+        ]
+
     def __str__(self):
         hand_str = ""
         for i, card in enumerate(self.cards):
