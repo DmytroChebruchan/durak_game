@@ -136,8 +136,8 @@ class BasePlayer:
             card for card in self.hand.cards if card.suit == self.trump_suit
         ]
         if len(hand_of_trump_suit):
-            return min(hand_of_trump_suit, key=lambda c: c.value).score
-        return 0
+            return min(hand_of_trump_suit, key=lambda c: c.score).score
+        return 100000
 
 
 class User(BasePlayer):

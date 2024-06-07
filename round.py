@@ -20,10 +20,10 @@ class Round:
 
         if player_1_lowest_trump > player_2_lowest_trump:
             self.players[0].turn_to_move = True
+            print(f"{self.players[0].name} goes first.")
         else:
             self.players[1].turn_to_move = True
-
-        print(f"{self.players[0].name} goes first.")
+            print(f"{self.players[1].name} goes first.")
 
     def start_round(self):
         print("Round started.")
@@ -52,6 +52,7 @@ class Round:
             if not self.will_attacker_attack():
                 print(f"{self.attacker.name} will not add cards.")
                 break
+            self.piles_on_table.print_cards_on_table()
 
         drop_needed = all([not player.take_cards for player in self.players])
         self.complete_round(drop_needed)

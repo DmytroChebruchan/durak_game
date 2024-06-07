@@ -101,6 +101,12 @@ class PairsOnTable:
         pairs = [[pile.attacker_card, pile.defender_card] for pile in piles]
         return [card for pair in pairs for card in pair if card is not None]
 
+    def print_cards_on_table(self):
+        piles = [pile for pile in self.pairs]
+        pairs = [[pile.attacker_card, pile.defender_card] for pile in piles]
+        for pair in pairs:
+            print(f"{pair[0]} - {pair[1]}")
+
     def drop_cards_from_table(self, deck):
         cards_on_table = self.get_cards_on_table()
         if cards_on_table:
