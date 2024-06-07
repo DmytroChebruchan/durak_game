@@ -21,27 +21,30 @@ class BasePlayer:
 
     def attack(self, pairs_on_table: PairsOnTable):
         print(f"{self.name} attacks.")
-
         attacking_card = self.hand.card_chooser()
-        print_divider()
+        self.execute_attack(attacking_card, pairs_on_table)
 
+    def execute_attack(self, attacking_card, pairs_on_table):
+        print_divider()
         self.hand.cards.remove(attacking_card)
         pairs_on_table.add_attack(card=attacking_card)
-
         self.hand.sort_hand()
-
         print(f"{self.name} is attacking with \n{attacking_card}.")
         print_divider()
 
     def react_to_attack(self, pile: PairsOnTable):
         print(f"{self.name} reacts to attack.")
         self.hand.print_hand_cards()
-
         if not self.check_if_can_defend(pile):
-            print(f"{self.name} cannot defend and takes.")
-            self.take_cards = True
+            self.fail_to_defend()
             return False
+        self.defend(pile)
 
+    def fail_to_defend(self):
+        print(f"{self.name} cannot defend and takes.")
+        self.take_cards = True
+
+    def defend(self, pile: PairsOnTable):
         while True:
             user_input = self.request_player_for_input(
                 'Would you like to defend(num_of_card) or take("take")?'
@@ -51,21 +54,28 @@ class BasePlayer:
                 self.set_take_cards()
                 return
 
-            print("You chose to defend.")
-            defending_card = self.hand.cards[int(user_input) - 1]
-
-            if check_card_as_defender(pile, defending_card, self.trump_suit):
+            if self.attempt_defense(pile, user_input):
                 break
 
-            print(f"{self.name} cannot defend with {defending_card}.")
-            print(f"Attacking card is {pile.pairs[-1].attacker_card}.")
+    def attempt_defense(self, pile: PairsOnTable, user_input):
+        print("You chose to defend.")
+        defending_card = self.hand.cards[int(user_input) - 1]
+        if check_card_as_defender(pile, defending_card, self.trump_suit):
+            self.complete_defense(pile, defending_card)
+            return True
+        self.fail_defense_attempt(defending_card, pile)
+        return False
 
+    def complete_defense(self, pile: PairsOnTable, defending_card):
         self.hand.drop_card_from_hand(defending_card)
         pile.pairs[-1].add_defender_card(defending_card)
         self.take_cards = False
-
         print(f"{self.name} is defending with card: \n", defending_card)
         print_divider()
+
+    def fail_defense_attempt(self, defending_card, pile):
+        print(f"{self.name} cannot defend with {defending_card}.")
+        print(f"Attacking card is {pile.pairs[-1].attacker_card}.")
 
     def check_if_can_defend(self, pile):
         attacking_card = pile.pairs[-1].attacker_card
@@ -141,4 +151,3 @@ class Computer(BasePlayer):
 
     def if_adds_attacking_cards(self):
         return False
-
